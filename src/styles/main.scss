@@ -1,0 +1,14 @@
+@import './slider/slider.scss';
+@import './title/title.scss';
+
+// @import './content';
+* {
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
+}
+
+#app {
+   height: 100%;
+   padding-top: 10px;
+}
