@@ -1,6 +1,11 @@
 export class Slider {
    offset = 0
-
+   constructor() {
+      this.images = document.querySelectorAll('.slider__img')
+      this.sliderList = document.createElement('div')
+      this.sliderList.classList = 'slider__list'
+      this.current = 0
+   }
    init() {
       const app = document.getElementById('app')
       app.append(this.createSlider())
@@ -12,28 +17,17 @@ export class Slider {
       const sliderCont = document.createElement('div')
       sliderCont.classList = 'slider__cont'
       const arrows = this.createArrowsCont();
-      const movingList = this.createMovingElems()
-      sliderCont.append(movingList)
+      const slList = this.sliderList
+      this.images.forEach(el => {
+         slList.append(el)
+      })
+      sliderCont.append(slList)
       slider.append(sliderCont, arrows)
       return slider
    }
 
    createMovingElems() {
-      this.sliderList = document.createElement('div')
-      this.sliderList.classList = 'slider__list'
-      this.imgFirst = document.createElement('img')
-      this.imgFirst.setAttribute('src', './src/img/img1.jpg')
-      this.imgSecond = document.createElement('img')
-      this.imgSecond.setAttribute('src', './src/img/img2.jpg')
-      this.imgLast = document.createElement('img')
-      this.imgLast.setAttribute('src', './src/img/img3.jpg')
-      this.strImgs = [this.imgFirst, this.imgSecond, this.imgLast]
-      this.strImgs.forEach(img => {
-         img.classList.add('slider__img')
-         img.style.objectFit = 'cover'
-      })
-      this.sliderList.append(this.imgFirst, this.imgSecond, this.imgLast)
-      return this.sliderList
+
    }
 
 
@@ -57,10 +51,11 @@ export class Slider {
 
    prevFrame() {
       this.arrowBtnNext.addEventListener('click', () => {
-         this.offset += 800
+         this.offset += this.images[0].clientWidth
          this.sliderList.style.left = -this.offset + 'px'
          this.sliderList.style.transition = 'all 1s'
-         if (this.offset > 1600) {
+         let calcRes = this.images[0].clientWidth * this.images.length - this.images[0].clientWidth
+         if (this.offset > calcRes) {
             this.offset = 0;
             this.sliderList.style.left = this.offset + 'px'
          }
@@ -77,11 +72,12 @@ export class Slider {
 
    nextFrame() {
       this.arrowBtnPrev.addEventListener('click', () => {
-         this.offset -= 800
+         this.offset -= this.images[0].clientWidth
          this.sliderList.style.left = -this.offset + 'px'
          this.sliderList.style.transition = 'all 1s'
          if (this.offset < 0) {
-            this.offset = 1600;
+            let calc = this.images[0].clientWidth * this.images.length - this.images[0].clientWidth
+            this.offset = calc;
             this.sliderList.style.left = -this.offset + 'px'
          }
       })
